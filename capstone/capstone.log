@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2014.5.30)  9 DEC 2014 17:29
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2014.5.30)  31 JAN 2015 19:00
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -130,62 +130,7 @@ Package: float 2001/11/08 v1.3d Float enhancements (AL)
 \float@box=\box27
 \@float@everytoks=\toks17
 \@floatcapt=\box28
-) (./capstone.aux
-
-LaTeX Warning: Label `IEEEhowto:kopka' multiply defined.
-
-
-LaTeX Warning: Label `IEEEhowto:kopka' multiply defined.
-
-
-LaTeX Warning: Label `IEEEhowto:kopka' multiply defined.
-
-
-LaTeX Warning: Label `IEEEhowto:kopka' multiply defined.
-
-
-LaTeX Warning: Label `IEEEhowto:kopka' multiply defined.
-
-
-LaTeX Warning: Label `IEEEhowto:kopka' multiply defined.
-
-
-LaTeX Warning: Label `IEEEhowto:kopka' multiply defined.
-
-
-LaTeX Warning: Label `IEEEhowto:kopka' multiply defined.
-
-
-LaTeX Warning: Label `IEEEhowto:kopka' multiply defined.
-
-
-LaTeX Warning: Label `IEEEhowto:kopka' multiply defined.
-
-
-LaTeX Warning: Label `IEEEhowto:kopka' multiply defined.
-
-
-LaTeX Warning: Label `IEEEhowto:kopka' multiply defined.
-
-
-LaTeX Warning: Label `IEEEhowto:kopka' multiply defined.
-
-
-LaTeX Warning: Label `IEEEhowto:kopka' multiply defined.
-
-
-LaTeX Warning: Label `IEEEhowto:kopka' multiply defined.
-
-
-LaTeX Warning: Label `IEEEhowto:kopka' multiply defined.
-
-
-LaTeX Warning: Label `IEEEhowto:kopka' multiply defined.
-
-
-LaTeX Warning: Label `IEEEhowto:kopka' multiply defined.
-
-)
+) (./capstone.aux)
 \openout1 = `capstone.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 331.
@@ -200,7 +145,8 @@ LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 331.
 LaTeX Font Info:    ... okay on input line 331.
 LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 331.
 LaTeX Font Info:    ... okay on input line 331.
- (/usr/share/texlive/texmf-dist/tex/context/base/supp-pdf.mkii
+
+(/usr/share/texlive/texmf-dist/tex/context/base/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count94
 \scratchdimen=\dimen119
@@ -278,6 +224,10 @@ Missing character: There is no ú in font ptmr7t!
 Missing character: There is no ‚ in font ptmr7t!
 Missing character: There is no Ä in font ptmr7t!
 Missing character: There is no ù in font ptmr7t!
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <7> on input line 419.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <5> on input line 419.
 Missing character: There is no ‚ in font ptmr7t!
 Missing character: There is no Ä in font ptmr7t!
 Missing character: There is no ú in font ptmr7t!
@@ -289,11 +239,11 @@ Missing character: There is no ù in font ptmr7t!
 
 
 ] [2]
-<figs/attackflow.png, id=11, 810.02625pt x 541.02126pt>
+<figs/attackflow.png, id=12, 810.02625pt x 541.02126pt>
 File: figs/attackflow.png Graphic file (type png)
 
 <use figs/attackflow.png>
-Package pdftex.def Info: figs/attackflow.png used on input line 517.
+Package pdftex.def Info: figs/attackflow.png used on input line 519.
 (pdftex.def)             Requested size: 243.00975pt x 162.30762pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
@@ -306,43 +256,37 @@ Missing character: There is no ‚ in font ptmr7t!
 Missing character: There is no Ä in font ptmr7t!
 Missing character: There is no ù in font ptmr7t!
 
-<figs/methodology.png, id=17, 963.6pt x 542.025pt>
+<figs/methodology.png, id=18, 837.1275pt x 405.76593pt>
 File: figs/methodology.png Graphic file (type png)
- <use figs/methodology.png>
-Package pdftex.def Info: figs/methodology.png used on input line 542.
-(pdftex.def)             Requested size: 433.616pt x 243.90898pt.
 
-[4 <./figs/attackflow.png>]
-<figs/schedule.png, id=22, 959.83594pt x 321.45094pt>
+<use figs/methodology.png>
+Package pdftex.def Info: figs/methodology.png used on input line 544.
+(pdftex.def)             Requested size: 376.70389pt x 182.59297pt.
+ [4 <./figs/attackflow.png>]
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <8> on input line 582.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <6> on input line 582.
+
+<figs/schedule.png, id=23, 959.83594pt x 321.45094pt>
 File: figs/schedule.png Graphic file (type png)
  <use figs/schedule.png>
-Package pdftex.def Info: figs/schedule.png used on input line 577.
+Package pdftex.def Info: figs/schedule.png used on input line 617.
 (pdftex.def)             Requested size: 431.92218pt x 144.65158pt.
 
+(./capstone.bbl
+** WARNING: IEEEtran.bst: No hyphenation pattern has been
+** loaded for the language `en'. Using the pattern for
+** the default language instead.
+** WARNING: IEEEtran.bst: No hyphenation pattern has been
+** loaded for the language `en'. Using the pattern for
+** the default language instead.
 [5 <./figs/methodology.png>]
-Missing character: There is no ‚ in font ptmr7t!
-Missing character: There is no Ä in font ptmr7t!
-Missing character: There is no ê in font ptmr7t!
-
-Underfull \hbox (badness 10000) in paragraph at lines 751--752
-[]\OT1/ptm/m/n/8 Python (n.d.). Re-trieved Novem-ber 24, 2014, from
+Underfull \hbox (badness 10000) in paragraph at lines 132--135
+[]\OT1/ptm/m/n/8 ``android-apktool.'' [On-line]. Avail-able:
  []
 
-
-Underfull \hbox (badness 10000) in paragraph at lines 754--755
-[]\OT1/ptm/m/n/8 Networkx (n.d.). Re-trieved Novem-ber 24, 2014, from
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 760--761
-[]\OT1/ptm/m/n/8 android-apktool (n.d.). Re-trieved Novem-ber 24, 2014, from
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 763--764
-[]\OT1/ptm/m/n/8 java-callgraph (n.d.). Re-trieved Novem-ber 24, 2014, from
- []
-
+)
 
 ** Conference Paper **
 Before submitting the final camera ready copy, remember to:
@@ -354,29 +298,24 @@ Before submitting the final camera ready copy, remember to:
  uses only Type 1 fonts and that every step in the generation
  process uses the appropriate paper size.
 
-[6
-
- <./figs/schedule.png>] (./capstone.aux)
-
-LaTeX Warning: There were multiply-defined labels.
-
- ) 
+[6 <./figs/schedule.png>] (./capstone.aux) ) 
 Here is how much of TeX's memory you used:
- 2244 strings out of 493304
- 35813 string characters out of 6139871
- 103032 words of memory out of 5000000
- 5702 multiletter control sequences out of 15000+600000
- 31911 words of font info for 61 fonts, out of 8000000 for 9000
+ 2296 strings out of 493304
+ 36562 string characters out of 6139871
+ 104068 words of memory out of 5000000
+ 5743 multiletter control sequences out of 15000+600000
+ 36594 words of font info for 70 fonts, out of 8000000 for 9000
  960 hyphenation exceptions out of 8191
  37i,8n,23p,1152b,238s stack positions out of 5000i,500n,10000p,200000b,80000s
-{/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/share/texliv
-e/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/share/texlive/texmf-dist/fo
-nts/type1/urw/times/utmr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/t
-imes/utmri8a.pfb>
-Output written on capstone.pdf (6 pages, 168558 bytes).
+{/usr/share/texlive/texmf-dist/font
+s/enc/dvips/base/8r.enc}</usr/share/texlive/texmf-dist/fonts/type1/public/amsfo
+nts/cm/cmsy7.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmb8a.pf
+b></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/share/t
+exlive/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
+Output written on capstone.pdf (6 pages, 165956 bytes).
 PDF statistics:
- 43 PDF objects out of 1000 (max. 8388607)
- 25 compressed objects within 1 object stream
+ 46 PDF objects out of 1000 (max. 8388607)
+ 28 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  16 words of extra memory for PDF output out of 10000 (max. 10000000)
 

@@ -1,5 +1,5 @@
 
-%% bare_conf.tex
+%% capstone.tex
 %% V1.4
 %% 2012/12/27
 %% by Michael Shell
@@ -407,18 +407,20 @@ Advisor: Dr. Andy Meneely}}
 % no \IEEEPARstart
 Mobile devices have seen an explosive increment in use during the past few years. With the advent of tablets, phones and other smart devices, computing has taken a new, more accessible and portable form and has become integral to our everyday lives now more than ever. With processing power comparable to conventional desktop machines, these devices are capable of meeting our most common computing needs. To achieve this, smart devices access and manipulate sensitive information such as location, calendars and emails. Indeed, smart devices provide a lot of convenience. However, due to the amount of sensitive information they manage, they also represent a security risk.
 
-In this day and age only a handful of different mobile platforms hold the majority of the market share. Among those, Android has seen an outstanding growth in its install base and now holds a privileged position of more than half of smartphone users in the US [1]. Due in part to its popularity, the Android platform has been the target of multiple attacks [2]. Even though Android's application development framework and the operating system itself provide (although not perfect [3]) many defense mechanisms [4] [5], the responsibility to protect sensitive information ultimately falls to application developers as their applications are what interact directly with the users and their information.
+In this day and age only a handful of different mobile platforms hold the majority of the market share. Among those, Android has seen an outstanding growth in its install base and now holds a privileged position of more than half of smartphone users in the US \cite{_android_news}. Due in part to its popularity, the Android platform has been the target of multiple attacks \cite{vidas_all_2011}. Even though Android's application development framework and the operating system itself provide (although not perfect \cite{shabtai_google_2010}) many defense mechanisms \cite{burns2009mobile} \cite{enck2011study}, the responsibility to protect sensitive information ultimately falls to application developers as their applications are what interact directly with the users and their information.
 
-With security being such an important concern, the need for it to be managed is imperative. For software security to be managed and subsequently improved, measuring it, as is the case with most quality attributes, is essential. To address this problem we propose the use of a measurement of applications' attack surface based on their call graph information [6].
+With security being such an important concern, the need for it to be managed is imperative. For software security to be managed and subsequently improved, measuring it, as is the case with most quality attributes, is essential. To address this problem we propose the use of a measurement of applications' attack surface based on their call graph information \cite{Manadhata2011AnAttackSurfaceMetric}.
 
-The attack surface is defined as all the different ways in which a malicious user can take advantage of a system and compromise its data. It can be thought as the “attackability” of a system. We can say then, that the smaller a system's attack surface is, the more secure it is [6]. It makes sense then that a metric for the attack surface would be relative. As such, we propose measuring the attack surface of different versions of an application and comparing the various measurements to discover its evolution and whether it has become “more” or “less” secure.
+The attack surface is defined as all the different ways in which a malicious user can take advantage of a system and compromise its data. It can be thought as the “attackability” of a system. We can say then, that the smaller a system's attack surface is, the more secure it is \cite{Manadhata2011AnAttackSurfaceMetric}. It makes sense then that a metric for the attack surface would be relative. As such, we propose measuring the attack surface of different versions of an application and comparing the various measurements to discover its evolution and whether it has become “more” or “less” secure.
 
 To guide our research efforts, we propose the following research questions:
 
-Can the attack surface of an Android application be measured?
-How does the attack surface evolve in Android applications?
+\begin{itemize}
+  \item Can the attack surface of an Android application be measured?
+  \item How does the attack surface evolve in Android applications?
+\end{itemize}
 
-Past research in the area of Android application security has focused on enhancements to the application development framework's security aspects [7], application privilege [8] and inter-application communication [9]. There has been previous work on attack surface of android [10] that used call graph information of applications to identify permission gaps. Our approach proposes the use of call graph information to measure and characterize the attack surface and use this to observe the difference in security between various versions of studied applications.
+Past research in the area of Android application security has focused on enhancements to the application development framework's security aspects \cite{ongtang_semantically_2012}, application privilege \cite{bugiel2012towards} and inter-application communication \cite{chin_analyzing_2011}. There has been previous work on attack surface of android \cite{bartel_automatically_2012} that used call graph information of applications to identify permission gaps. Our approach proposes the use of call graph information to measure and characterize the attack surface and use this to observe the difference in security between various versions of studied applications.
 
 \section{Android Application Development Platform Overview}
 
@@ -478,13 +480,13 @@ There has been extensive work in the area of security in the Android platform.
 
 \subsection{Android Security}
 
-Shabtai et al. [3] performed a comprehensive security assessment of the Android platform. They evaluated all security concepts and mechanisms used in the platform. Both those that are inherited from the Linux kernel and new to the Android operating system itself. They identified potential weaknesses on the security mechanisms of the platform and offered several techniques that could be used to address these weaknesses. 
+Shabtai et al. \cite{shabtai_google_2010} performed a comprehensive security assessment of the Android platform. They evaluated all security concepts and mechanisms used in the platform. Both those that are inherited from the Linux kernel and new to the Android operating system itself. They identified potential weaknesses on the security mechanisms of the platform and offered several techniques that could be used to address these weaknesses. 
 
-Gommerstadt et al. [11] developed a model of the information flow in Android applications with a focus on the flow of private and sensitive data. They use previous studies on Android security as a base for their model and present two applications as case studies as a way for using their model to study the flow of information.
+Gommerstadt et al. \cite{gommerstadt2012android} developed a model of the information flow in Android applications with a focus on the flow of private and sensitive data. They use previous studies on Android security as a base for their model and present two applications as case studies as a way for using their model to study the flow of information.
 
 \subsection{Taxonomy of Android Attacks}
 
-Vidas et al. [2] from the Carnegie Mellon University developed a taxonomy of all the known attacks that targeted the Android platform. The classification they proposed grouped the attack classes into two categories depending on the access that the attacker would need on the device: Attacks with physical access and attacks with no physical access.
+Vidas et al. \cite{vidas_all_2011} from the Carnegie Mellon University developed a taxonomy of all the known attacks that targeted the Android platform. The classification they proposed grouped the attack classes into two categories depending on the access that the attacker would need on the device: Attacks with physical access and attacks with no physical access.
 
 \subsubsection{Attacks without physical access}
 
@@ -498,7 +500,7 @@ Some of the ways that seemingly benign applications can reach a user's device is
 
 These kinds of remote exploitation attacks can also be achieved without the installation of malicious software in the target device. Vulnerabilities in common software that mobile devices use like web browsers or even the underlying Linux kernel can be exploited to run harmful code with high privilege.
 
-Bugiel et al [8] explore the problem of developing a framework to protect the Android platform against two specific types of privilege escalation attacks: confused deputy and collusion attacks. They contribute with ways to improve the security of Android against these types of attacks.
+Bugiel et al \cite{bugiel2012towards} explore the problem of developing a framework to protect the Android platform against two specific types of privilege escalation attacks: confused deputy and collusion attacks. They contribute with ways to improve the security of Android against these types of attacks.
 
 \subsubsection{Attacks with physical access}
 
@@ -521,17 +523,17 @@ Based on their proposed taxonomy and the attacker's capabilities, Vidas et al. a
 
 \subsection{The Attack Surface}
 
-As Manadhata and Wing [6] put it: "A system's attack surface is the subset of its resources that an attacker can use to attack the system." In their work Manadhata et al. [6] come up with a definition for a multi-dimensional metric for attack surfaces based on many factors. One particularly important is the count of Entry and Exit Points of the system under analysis. They develop a methodology for obtaining systems' Entry and Exit Points based on their call graph. Both static (compile-time) and dynamic (runtime) data is needed for a comprehensive call graph.
+As Manadhata and Wing \cite{Manadhata2011AnAttackSurfaceMetric} put it: "A system's attack surface is the subset of its resources that an attacker can use to attack the system." In their work Manadhata et al. \cite{Manadhata2011AnAttackSurfaceMetric} come up with a definition for a multi-dimensional metric for attack surfaces based on many factors. One particularly important is the count of Entry and Exit Points of the system under analysis. They develop a methodology for obtaining systems' Entry and Exit Points based on their call graph. Both static (compile-time) and dynamic (runtime) data is needed for a comprehensive call graph.
 
-In subsequent work, Manadhata et al. [12] [13] use their developed methodology to measure and study the attack surface of industrial and open source software. In [12] they present a case study on two applications in the same domain. The authors apply the concepts explored in their previous work and put them to practice with two case studies. They use their multi-dimensional attack surface metric to compare the security attribute of two Unix FTP Daemons: ProFTPD and WuFTPD. This paper provides a real-world scenario in which an attack surface metric could be used to support software acquisition decisions by comparing the attack surface of two or more software alternatives.
+In subsequent work, Manadhata et al. \cite{manadhata_measuring_2006} \cite{manadhata2009report} use their developed methodology to measure and study the attack surface of industrial and open source software. In  \cite{manadhata_measuring_2006} they present a case study on two applications in the same domain. The authors apply the concepts explored in their previous work and put them to practice with two case studies. They use their multi-dimensional attack surface metric to compare the security attribute of two Unix FTP Daemons: ProFTPD and WuFTPD. This paper provides a real-world scenario in which an attack surface metric could be used to support software acquisition decisions by comparing the attack surface of two or more software alternatives.
 
-In [13] they present another case study, this time with an enterprise software written in Java: SAP. They implement their metric calculation methodology as an eclipse IDE plugin. In this case study, they present their metric as a complementary approach to general code quality assessments for software security.
+In \cite{manadhata2009report} they present another case study, this time with an enterprise software written in Java: SAP. They implement their metric calculation methodology as an eclipse IDE plugin. In this case study, they present their metric as a complementary approach to general code quality assessments for software security.
 
 \subsection{The Attack Surface in Android}
 
-Previous work on attack surface of Android applications has focused on inter-application communication [9] and permission gaps [10]. Bartel et al. [10] focus on the “permission-gap” and uses that to define the attack surface in Android applications. They define this as the mismatch between the permissions that an application requests at installation-time and the ones that it actually uses. Their premise is that the bigger the difference between permissions quantity the larger the attack surface because there are more permissions requested but not needed. They develop a static analysis based method to extracting the call graph information of Android applications calculate their permission gap.
+Previous work on attack surface of Android applications has focused on inter-application communication \cite{chin_analyzing_2011} and permission gaps \cite{bartel_automatically_2012}. Bartel et al. \cite{bartel_automatically_2012} focus on the “permission-gap” and uses that to define the attack surface in Android applications. They define this as the mismatch between the permissions that an application requests at installation-time and the ones that it actually uses. Their premise is that the bigger the difference between permissions quantity the larger the attack surface because there are more permissions requested but not needed. They develop a static analysis based method to extracting the call graph information of Android applications calculate their permission gap.
 
-Chin et al. [9] explore another aspect of Android applications' security related to the attack surface: inter-application communication. They explain the risks that come with inter-application communication and present a tool they developed to analyze applications and detect vulnerabilities.
+Chin et al. \cite{chin_analyzing_2011} explore another aspect of Android applications' security related to the attack surface: inter-application communication. They explain the risks that come with inter-application communication and present a tool they developed to analyze applications and detect vulnerabilities.
 
 Our approach proposes the use of call graph information to measure and characterize the attack surface and use this to observe the difference in security between various versions of applications.
 
@@ -558,19 +560,57 @@ To maximize our sample, we will obtain the case study applications' source code 
 
 \section{Tools}
 
-\textbf{Python}: The Python [14] programming language will be used for developing the scripts and tools needed for measuring the attack surface. In previous work, we have developed a tool that, given an in-memory representation of a call graph, calculates various metrics. We plan to extend this tool with support for Android applications. For this we will need to develop an Android call graph parser component that will take a text representation of the call graph on an application and convert it to an in-memory data structure that can be operated on. Other enhancements will need to be done in order to support the new Entry and Exit Points definitions that will be derived from studying the Android application development framework.
+\textbf{Python}: The Python \cite{python_lang} programming language will be used for developing the scripts and tools needed for measuring the attack surface. In previous work, we have developed a tool that, given an in-memory representation of a call graph, calculates various metrics. We plan to extend this tool with support for Android applications. For this we will need to develop an Android call graph parser component that will take a text representation of the call graph on an application and convert it to an in-memory data structure that can be operated on. Other enhancements will need to be done in order to support the new Entry and Exit Points definitions that will be derived from studying the Android application development framework.
 
-\textbf{Networkx}: Networkx [15] is a Python library that offers graph analysis functionalities. Once the call graph is translated into a data structure that Networkx can work with, it will be used to calculate various types of metrics.
+\textbf{Networkx}: Networkx \cite{networkx_lib} is a Python library that offers graph analysis functionalities. Once the call graph is translated into a data structure that Networkx can work with, it will be used to calculate various types of metrics.
 
-\textbf{Git}: The applications that we select for performing the evolutionary analysis will most likely have their source code version controlled in Git [16]. We will use the many features provided by the Git command line interface to mine the repositories and obtain multiple versions of the applications we select as case studies for the evolutionary analysis.
+\textbf{Git}: The applications that we select for performing the evolutionary analysis will most likely have their source code version controlled in Git \cite{git_scm}. We will use the many features provided by the Git command line interface to mine the repositories and obtain multiple versions of the applications we select as case studies for the evolutionary analysis.
 
-\textbf{android-apktool}: This tool [17] will allow us to reverse engineer the Android application packages (APKs) containing the applications that we select as case studies and obtain their source code for analysis.
+\textbf{android-apktool}: This tool \cite{android_apktool} will allow us to reverse engineer the Android application packages (APKs) containing the applications that we select as case studies and obtain their source code for analysis.
 
-\textbf{java-callgraph}: We will use this tool [18] to obtain the call graph information of the android applications we select as case studies.
+\textbf{java-callgraph}: We will use this tool \cite{java_callgraph} to obtain the call graph information of the android applications we select as case studies.
 
-\textbf{Spark}: An alternative call graph generation tool for java that [19] is part of the Soot analysis framework [20]
+\textbf{Spark}: An alternative call graph generation tool for java that is part of the Soot analysis framework \cite{soot_framework} \cite{Lam_thesoot}.
 
 \section{Work Schedule}
+
+\begin{table*}[!t]
+\renewcommand{\arraystretch}{1.3}
+\caption{Project Work Schedule}
+\label{tab:schedule}
+\centering
+\begin{tabular}{|l|c|c|}
+\hline
+Activity & Begin & End \\
+\hline
+Android Platform study & 2/2/2015 & 2/20/2015 \\ 
+\hline 
+Entry/Exit Point definition development & 2/9/2015 & 2/20/2015 \\
+\hline 
+APK reverse engineering tool chain survey & 2/23/2015 & 3/6/2015 \\
+\hline 
+Call graph generation tools survey & 2/23/2015 & 3/6/2015 \\
+\hline 
+APK reverse engineering automated tool development & 3/9/2015 & 3/20/2015 \\
+\hline 
+Call graph parser development & 3/9/2015 & 3/20/2015 \\
+\hline 
+Android attack surface measurement functionality integration & 3/16/2015 & 4/3/2015 \\
+\hline 
+Application sample selection & 4/6/2015 & 4/17/2015 \\
+\hline 
+Application sample selection for Evolutionary Analysis & 4/6/2015 & 4/17/2015 \\
+\hline 
+Measurement tool execution on sample applications & 4/20/2015 & 4/24/2015 \\
+\hline 
+Measurement result analysis & 4/27/2015 & 5/8/2015 \\
+\hline 
+Design final presentation poster & 4/27/2015 & 5/15/2015 \\
+\hline 
+Write final report & 3/23/2015 & 5/15/2015 \\
+\hline 
+\end{tabular}
+\end{table*}
 
 \begin{figure*}
   \centering
@@ -579,7 +619,7 @@ To maximize our sample, we will obtain the case study applications' source code 
   \label{fig:schedule}
 \end{figure*}
 
-Figure \ref{fig:schedule} shows the plan of work with all the project's activities with assigned beginning and finishing dates.
+Figure \ref{fig:schedule} and Table \ref{tab:schedule} show the plan of work with all the project's activities with assigned beginning and finishing dates.
 
 
 % An example of a floating figure using the graphicx package.
@@ -701,74 +741,13 @@ Figure \ref{fig:schedule} shows the plan of work with all the project's activiti
 % http://www.ctan.org/tex-archive/biblio/bibtex/contrib/doc/
 % The IEEEtran BibTeX style support page is at:
 % http://www.michaelshell.org/tex/ieeetran/bibtex/
-%\bibliographystyle{IEEEtran}
-% argument is your BibTeX string definitions and bibliography database(s)
-%\bibliography{IEEEabrv,../bib/paper}
+\bibliographystyle{IEEEtran}
+\bibliography{capstone}
 %
 % <OR> manually copy in the resultant .bbl file
 % set second argument of \begin to the number of references
 % (used to reserve space for the reference number labels box)
-\begin{thebibliography}{1}
 
-\bibitem{IEEEhowto:kopka}
-Whitney, Lance. "Android Loses Some US Market Share but Remains Top Dog." CNET. N.p., 4 Sept. 2014. Web. 19 Oct. 2014.
-
-\bibitem{IEEEhowto:kopka}
-Vidas, T., Votipka, D., \& Christin, N. (2011, August). All Your Droid Are Belong to Us: A Survey of Current Android Attacks. In WOOT (pp. 81-90).
-
-\bibitem{IEEEhowto:kopka}
-Shabtai, A., Fledel, Y., Kanonov, U., Elovici, Y., Dolev, S., \& Glezer, C. (2010). Google android: A comprehensive security assessment. IEEE Security and Privacy, 8(2), 35-44.
-
-\bibitem{IEEEhowto:kopka}
-Burns, J. (2009). Mobile application security on Android. Black Hat, 9.
-Enck, W., Octeau, D., McDaniel, P., \& Chaudhuri, S. (2011, August). A Study of Android Application Security. In USENIX security symposium (Vol. 2, p. 2).
-
-\bibitem{IEEEhowto:kopka}
-Manadhata, P. K., \& Wing, J. M. (2011). An attack surface metric. Software Engineering, IEEE Transactions on, 37(3), 371-386.
-
-\bibitem{IEEEhowto:kopka}
-Ongtang, M., McLaughlin, S., Enck, W., \& McDaniel, P. (2012). Semantically rich application‐centric security in Android. Security and Communication Networks, 5(6), 658-673.
-
-\bibitem{IEEEhowto:kopka}
-Bugiel, S., Davi, L., Dmitrienko, A., Fischer, T., Sadeghi, A. R., \& Shastry, B. (2012, February). Towards Taming Privilege-Escalation Attacks on Android. InNDSS.
-
-\bibitem{IEEEhowto:kopka}
-Chin, E., Felt, A. P., Greenwood, K., \& Wagner, D. (2011, June). Analyzing inter-application communication in Android. In Proceedings of the 9th international conference on Mobile systems, applications, and services (pp. 239-252). ACM.
-
-\bibitem{IEEEhowto:kopka}
-Bartel, A., Klein, J., Le Traon, Y., \& Monperrus, M. (2012, September). Automatically securing permission-based software by reducing the attack surface: an application to android. In Proceedings of the 27th IEEE/ACM International Conference on Automated Software Engineering (pp. 274-277). ACM.
-
-\bibitem{IEEEhowto:kopka}
-Gommerstadt, H., \& Long, D. (2012). Android Application Security. 
-
-\bibitem{IEEEhowto:kopka}
-Manadhata, P., Wing, J., Flynn, M., \& McQueen, M. (2006, October). Measuring the attack surfaces of two FTP daemons. In Proceedings of the 2nd ACM workshop on Quality of protection (pp. 3-10). ACM. 
-
-\bibitem{IEEEhowto:kopka}
-Manadhata, P. K., Karabulut, Y., \& Wing, J. M. (2009). Report: Measuring the attack surfaces of enterprise software. In Engineering Secure Software and Systems (pp. 91-100). Springer Berlin Heidelberg.
-
-\bibitem{IEEEhowto:kopka}
-Python (n.d.). Retrieved November 24, 2014, from https://www.python.org/
-
-\bibitem{IEEEhowto:kopka}
-Networkx (n.d.). Retrieved November 24, 2014, from https://networkx.github.io/
-
-\bibitem{IEEEhowto:kopka}
-Git (n.d.). Retrieved November 24, 2014, from http://git-scm.com/
-
-\bibitem{IEEEhowto:kopka}
-android-apktool (n.d.). Retrieved November 24, 2014, from https://code.google.com/p/android-apktool/
-
-\bibitem{IEEEhowto:kopka}
-java-callgraph (n.d.). Retrieved November 24, 2014, from https://github.com/gousiosg/java-callgraph
-
-\bibitem{IEEEhowto:kopka}
-Soot Analysis Framework (n.d.). Retrieved November 24, 2014, from http://www.sable.mcgill.ca/soot/doc/overview-summary.html
-
-\bibitem{IEEEhowto:kopka}
-Lam, P., Bodden, E., Hendren, L., \& Darmstadt, T. U. (n.d.). The Soot framework for Java program analysis: a retrospective. Retrieved from http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.221.5311
-
-\end{thebibliography}
 
 
 % that's all folks
