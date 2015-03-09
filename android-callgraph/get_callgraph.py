@@ -22,11 +22,9 @@ def main():
     subprocess.call(["dex2jar-0.0.9.15/dex2jar.sh", "output/" + args.apk + ".dex"])
 
     # Obtain call graph from jar
-    subprocess.call(["java", "-jar", "java-callgraph/target/javacg-0.1-SNAPSHOT-static.jar",
+    subprocess.call(["java", "-jar", "java-callgraph/javacg-0.1-SNAPSHOT-static.jar",
                      "output/" + args.apk + "_dex2jar.jar"],
                     stdout=open("output/" + args.apk + ".cg.txt", "w"))
-
-    subprocess.call(["java", "-jar", "java-callgraph/target/javacg-0.1-SNAPSHOT-static.jar", "output/demo.apk_dex2jar.jar"], stdout=open("output/demo.apk.cg.txt", "w"))
 
 
 def parse_args():
