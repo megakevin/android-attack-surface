@@ -2,6 +2,7 @@ __author__ = 'kevin'
 
 import argparse
 import subprocess
+import os
 
 
 def main():
@@ -12,19 +13,21 @@ def main():
     # dex2jar-0.0.9.15/dex2jar.sh classes.dex
     # java -jar javacg-0.1-SNAPSHOT-static.jar output/classes_dex2jar.jar > javacg.txt
 
+    apk_name = os.path.basename(args.apk)
+
     # Create the dex file from the APK
-    subprocess.call(["jar", "xvf", "input/" + args.apk, "classes.dex"])
+    subprocess.call(["jar", "xvf", args.apk, "classes.dex"])
 
     # Move the dex file into the output folder
-    subprocess.call(["mv", "classes.dex", "output/" + args.apk + ".dex"])
+    subprocess.call(["mv", "classes.dex", "output/" + apk_name + ".dex"])
 
     # Create the jar from dex file
-    subprocess.call(["dex2jar-0.0.9.15/dex2jar.sh", "output/" + args.apk + ".dex"])
+    subprocess.call(["dex2jar-0.0.9.15/d2j-dex2jar.sh", "output/" + apk_name + ".dex"])
 
     # Obtain call graph from jar
     subprocess.call(["java", "-jar", "java-callgraph/javacg-0.1-SNAPSHOT-static.jar",
-                     "output/" + args.apk + "_dex2jar.jar"],
-                    stdout=open("output/" + args.apk + ".cg.txt", "w"))
+                     "output/" + apk_name + "-dex2jar.jar"],
+                    stdout=open("output/" + apk_name + ".cg.txt", "w"))
 
 
 def parse_args():
