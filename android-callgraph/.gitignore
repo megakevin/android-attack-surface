@@ -1,4 +1,8 @@
 # Created by .ignore support plugin (hsz.mobi)
+
+output/
+input/
+
 ### Python template
 # IDE stuff
 .idea
