@@ -23,5 +23,6 @@ cd ..
 java -jar jd-cmd/jd-cli/target/jd-cli.jar output/ -od output/
 
 ## Obtain call graph from jar
-java -jar /home/kevin/Desktop/java-callgraph/target/javacg-0.1-SNAPSHOT-static.jar output/classes_dex2jar.jar 
+java -jar java-callgraph/target/javacg-0.1-SNAPSHOT-static.jar output/classes_dex2jar.jar
+
 
