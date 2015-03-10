@@ -2,23 +2,34 @@ __author__ = 'kevin'
 
 import argparse
 import sqlite3
-
-from loaders.javacg_loader import JavaCGLoader
+import networkx as nx
 
 
 def main():
 
     args = parse_args()
+    call_graph = nx.DiGraph()
 
-    loader = JavaCGLoader(args.javacgfile)
-    call_graph = loader.load_call_graph()
+    with open(args.javacgfile) as raw_call_graph:
+        # line is like this:
+        # M:com.example.kevin.helloandroid.Greeter:sayHelloInSpanish (M)java.lang.StringBuilder:toString.
+        for line in raw_call_graph:
+            if line.startswith("M:"):
+                caller, callee = line.split(" ")
 
-    edges_to_insert = [(e[0].identity, e[1].identity, args.application) for e in call_graph.edges()]
+                caller = caller[2:].strip()  # Remove the trailing "M:"
+                callee = callee[3:].strip()  # Remove the trailing "(*)"
 
-    with sqlite3.connect('extras/android.cg.db') as db:
-        # db.row_factory = sqlite3.Row
+                call_graph.add_edge(caller, callee)
 
+    edges_to_insert = [(edge[0], edge[1], args.application) for edge in call_graph.edges()]
+
+    print("call graph file loaded into memory")
+
+    with sqlite3.connect('android.cg.db') as db:
         db.executemany('INSERT INTO edges (caller, callee, app) VALUES (?, ?, ?)', edges_to_insert)
+
+    print("call graph loaded into database")
 
 
 def parse_args():
