@@ -22,14 +22,29 @@ def main():
 
                 call_graph.add_edge(caller, callee)
 
-    edges_to_insert = [(edge[0], edge[1], args.application) for edge in call_graph.edges()]
+    edges_to_insert = [(edge[0], edge[1], get_package_name(edge[0]), get_package_name(edge[1]), args.application)
+                       for edge in call_graph.edges()]
 
     print("call graph file loaded into memory")
 
     with sqlite3.connect('android.cg.db') as db:
-        db.executemany('INSERT INTO edges (caller, callee, app) VALUES (?, ?, ?)', edges_to_insert)
+        db.executemany('INSERT INTO edges (caller, callee, caller_package, callee_package, app) '
+                       'VALUES (?, ?, ?, ?, ?)', edges_to_insert)
 
     print("call graph loaded into database")
+
+
+def get_package_name(method):
+    # return ".".join(method.split(":")[0].split(".")[:-1])
+
+    class_name = method.split(":")[0]
+
+    if "." in class_name:
+        package_name = ".".join(class_name.split(".")[:-1])
+    else:
+        package_name = class_name
+
+    return package_name
 
 
 def parse_args():
