@@ -24,6 +24,9 @@ def main():
     # Create the jar from dex file
     subprocess.call(["dex2jar-0.0.9.15/d2j-dex2jar.sh", "output/" + apk_name + ".dex"])
 
+    # Move the jar file into the output folder
+    subprocess.call(["mv", apk_name + "-dex2jar.jar", "output/" + apk_name + "-dex2jar.jar"])
+
     # Obtain call graph from jar
     subprocess.call(["java", "-jar", "java-callgraph/javacg-0.1-SNAPSHOT-static.jar",
                      "output/" + apk_name + "-dex2jar.jar"],
