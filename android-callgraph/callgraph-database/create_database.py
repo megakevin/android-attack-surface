@@ -2,6 +2,7 @@ __author__ = 'kevin'
 
 import sqlite3
 
+
 def main():
 
     db = sqlite3.connect('android.cg.db')
