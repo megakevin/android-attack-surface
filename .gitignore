@@ -1,7 +1,9 @@
 # Created by .ignore support plugin (hsz.mobi)
 
-output/
-input/
+android-callgraph/output/
+android-callgraph/input/
+
+callgraph-database/android.cg.db
 
 ### Python template
 # IDE stuff
