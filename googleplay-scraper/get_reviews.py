@@ -8,6 +8,7 @@ from xml.dom import minidom
 import time
 import sqlite3
 import argparse
+import datetime
 
 
 def main():
@@ -99,34 +100,52 @@ def parse_response(response):
         m = re.search(r"<img\s[^>]*?src\s*=\s*['\"]([^'\"]*?)['\"][^>]*?>", reviews)
         reviews = reviews.replace(m.group(0), "")
 
+    # with open("reviews.raw", "a") as f:
+    #     f.write(reviews)
+
     xmldoc = minidom.parseString("<reviews>" + reviews + "</reviews>")
 
-    divs = xmldoc.getElementsByTagName("div")
-    for div in divs:
-        if div.getAttribute('class') == "review-body":
+    reviews = [div for div in xmldoc.getElementsByTagName("div")
+               if div.getAttribute('class') == "single-review"]
 
-            review_title = ""
-            if div.childNodes[1].firstChild:
-                review_title = div.childNodes[1].firstChild.nodeValue
+    for review in reviews:
+        review_date = [span for span in review.getElementsByTagName('span')
+                       if span.getAttribute('class') == "review-date"]
 
-            review_body = div.childNodes[2].nodeValue
+        if review_date:
+            review_date = review_date[0].firstChild.nodeValue
 
-            result.append({
-                'title': review_title,
-                'body': review_body
-            })
+        div_review_body = [div for div in review.getElementsByTagName('div')
+                           if div.getAttribute('class') == "review-body"]
+
+        if div_review_body:
+            review_title = [span for span in div_review_body[0].getElementsByTagName('span')
+                            if span.getAttribute('class') == "review-title"]
+
+            if review_title and review_title[0].firstChild:
+                review_title = review_title[0].firstChild.nodeValue
+            else:
+                review_title = ""
+
+            review_body = div_review_body[0].childNodes[2].nodeValue
+
+        result.append({
+            'title': review_title,
+            'body': review_body,
+            # converting time.struct_time into datetime
+            'date': datetime.datetime(*time.strptime(review_date, "%B %d, %Y")[:6])
+        })
 
     return result
 
 
 def save_reviews(application_id, reviews):
 
-    reviews_to_insert = [(application_id, r['title'], r['body']) for r in reviews]
+    reviews_to_insert = [(application_id, r['title'], r['body'], r['date']) for r in reviews]
 
     with sqlite3.connect('reviews.db') as db:
-        db.executemany('INSERT INTO reviews ('
-                       'app, title, body) '
-                       'VALUES (?, ?, ?)', reviews_to_insert)
+        db.executemany('INSERT INTO reviews (app, title, body, date) '
+                       'VALUES (?, ?, ?, ?)', reviews_to_insert)
 
 
 if __name__ == '__main__':

@@ -11,7 +11,8 @@ def main():
                 "id" INTEGER PRIMARY KEY,
                 "app" TEXT NOT NULL,
                 "title" TEXT NOT NULL,
-                "body" TEXT NOT NULL
+                "body" TEXT NOT NULL,
+                "date" DATE NOT NULL
                 );''')
 
     db.commit()
