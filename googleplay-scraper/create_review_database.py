@@ -3,6 +3,19 @@ __author__ = 'kevin'
 import sqlite3
 
 
+'''
+In PostgreSQL:
+
+CREATE TABLE "reviews" (
+  "id" SERIAL PRIMARY KEY,
+  "app_id" TEXT NOT NULL,
+  "title" TEXT NOT NULL,
+  "body" TEXT NOT NULL,
+  "date" TIMESTAMP NOT NULL
+);
+'''
+
+
 def main():
 
     db = sqlite3.connect('reviews.db')

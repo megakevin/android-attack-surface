@@ -6,9 +6,11 @@ import json
 import re
 from xml.dom import minidom
 import time
-import sqlite3
+# import sqlite3
 import argparse
 import datetime
+import psycopg2
+from connection import PostgreSQL
 
 
 def main():
@@ -143,9 +145,21 @@ def save_reviews(application_id, reviews):
 
     reviews_to_insert = [(application_id, r['title'], r['body'], r['date']) for r in reviews]
 
-    with sqlite3.connect('reviews.db') as db:
-        db.executemany('INSERT INTO reviews (app, title, body, date) '
-                       'VALUES (?, ?, ?, ?)', reviews_to_insert)
+    # with sqlite3.connect('reviews.db') as db:
+    #     db.executemany('INSERT INTO reviews (app, title, body, date) '
+    #                    'VALUES (?, ?, ?, ?)', reviews_to_insert)
+
+    with psycopg2.connect(PostgreSQL.connection_string) as db:
+        try:
+            cursor = db.cursor()
+            cursor.executemany('INSERT INTO reviews (app_id, title, body, date) '
+                               'VALUES (%s, %s, %s, %s)', reviews_to_insert)
+
+            db.commit()
+
+        except Exception as ex:
+            db.rollback()
+            raise ex
 
 
 if __name__ == '__main__':
