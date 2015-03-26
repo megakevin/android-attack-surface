@@ -8,10 +8,12 @@ from scrapy.xlib.pydispatch import dispatcher
 from googleplay.config import *
 from googleplay.googleplay import GooglePlayAPI
 
+from connection import PostgreSQL
+
+
 # Stores the APK information in the database
 class SQLiteStorePipeline(object):
     filename = 'EvolutionOfAndroidApplications.sqlite'
-    connection_string = "host='localhost' dbname='kac2375' user='kac2375' password='thisismypassword'"
     
     def __init__(self):
         self.conn = None
@@ -36,7 +38,7 @@ class SQLiteStorePipeline(object):
         #     log.msg('File does not exist: %s' % self.filename, level=log.ERROR)
         try:
             log.msg('CONNECTING WOOT', level=log.DEBUG)
-            self.conn = psycopg2.connect(self.connection_string)
+            self.conn = psycopg2.connect(PostgreSQL.connection_string)
         except Exception as ex:
             log.msg('CONENCTION FAILED WOOT', level=log.DEBUG)
             log.msg('File does not exist: %s' % self.filename, level=log.ERROR)
