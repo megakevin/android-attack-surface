@@ -5,6 +5,9 @@ android-callgraph/input/
 
 callgraph-database/android.cg.db
 
+googleplay-scraper/reviews/connection.py
+googleplay-scraper/scraper/connection.py
+
 ### Python template
 # IDE stuff
 .idea
