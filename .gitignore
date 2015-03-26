@@ -9,8 +9,6 @@ googleplay-scraper/scraper/connection.py
 googleplay-scraper/reviews/connection.py
 googleplay-scraper/scraper/googleplay/config.py
 
-venv/
-venv-scraper/
 
 ### Python template
 # IDE stuff
