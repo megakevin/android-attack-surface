@@ -15,10 +15,12 @@ from connection import PostgreSQL
 
 def main():
     args = parse_args()
+    page_size = 40
 
-    max_pages = args.pages
+    # calculate the number of pages to request to obtain the given number of reviews
+    max_pages = int(args.number / page_size) + 1
 
-    for page_number in range(1, max_pages):
+    for page_number in range(1, max_pages + 1):
 
         print("Sleeping...")
         time.sleep(5)
@@ -49,8 +51,8 @@ def parse_args():
     parser.add_argument("-app", "--application",
                         help="The id of the app to get the reviews from.")
 
-    parser.add_argument("-p", "--pages", type=int,
-                        help="The number of review pages to request.")
+    parser.add_argument("-n", "--number", type=int,
+                        help="The number of reviews to request.")
 
     return parser.parse_args()
 
