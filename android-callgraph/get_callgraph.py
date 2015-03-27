@@ -47,7 +47,7 @@ def parse_args():
                         help="The apk of the application from which to extract the call graph.")
 
     parser.add_argument("-o", "--output",
-                        help="the folder to output the call graph.")
+                        help="The folder to output the call graph.")
 
     return parser.parse_args()
 
