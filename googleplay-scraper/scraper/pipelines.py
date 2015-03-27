@@ -51,6 +51,7 @@ class SQLiteStorePipeline(object):
             self.conn = psycopg2.connect(PostgreSQL.connection_string)
         except Exception as ex:
             log.msg('CONENCTION FAILED WOOT', level=log.DEBUG)
+            log.msg(ex.message, level=log.DEBUG)
             log.msg('File does not exist: %s' % self.filename, level=log.ERROR)
  
     def finalize(self):
@@ -241,5 +242,7 @@ class ReviewsDownloadPipeline(object):
                                    'VALUES (%s, %s, %s, %s)', reviews_to_insert)
                 db.commit()
             except Exception as ex:
+                log.msg('REVIEWS INSERTION FAILED WOOT', level=log.DEBUG)
+                log.msg(ex.message, level=log.DEBUG)
                 db.rollback()
                 raise ex
