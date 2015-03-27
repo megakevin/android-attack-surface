@@ -57,7 +57,7 @@ def parse_args():
     parser = argparse.ArgumentParser(
         description="Gets all the user reviews on the specified APK and saves it into a database.")
 
-    parser.add_argument("-app", "--application",
+    parser.add_argument("-a", "--application",
                         help="The id of the app to get the reviews from.")
 
     parser.add_argument("-n", "--number", type=int,

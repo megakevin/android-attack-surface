@@ -18,5 +18,5 @@ scrapy crawl googleplay
 
 ```bash
 cd googleplay-scraper/reviews
-python3 get_reviews.py -app <APK NAME> -n <NUMBER OF REVIEWS TO DOWNLOAD>
+python3 get_reviews.py -a <APK NAME> -n <NUMBER OF REVIEWS TO DOWNLOAD>
 ```
