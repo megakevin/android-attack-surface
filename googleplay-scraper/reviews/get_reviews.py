@@ -15,23 +15,28 @@ from connection import PostgreSQL
 
 def main():
     args = parse_args()
+
+    get_reviews(args.application, args.number)
+
+
+def get_reviews(application, number_of_reviews):
     page_size = 40
 
     # calculate the number of pages to request to obtain the given number of reviews
-    max_pages = int(args.number / page_size) + 1
+    max_pages = int(number_of_reviews / page_size) + 1
 
     for page_number in range(1, max_pages + 1):
 
         print("Sleeping...")
         time.sleep(5)
 
-        response = make_request(args.application, page_number)
+        response = make_request(application, page_number)
         print("Request made")
 
         reviews = parse_response(response)
         print("Response parsed")
 
-        save_reviews(args.application, reviews)
+        save_reviews(application, reviews)
         print("Reviews saved into the database")
 
 
