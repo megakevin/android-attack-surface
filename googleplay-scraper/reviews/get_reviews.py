@@ -1,7 +1,12 @@
 __author__ = 'kevin'
 
-import urllib.request
-import urllib.parse
+# import urllib.request
+# import urllib.parse
+
+# Python 2 compatibility
+import urllib2
+import urllib
+
 import json
 import re
 from xml.dom import minidom
@@ -15,7 +20,6 @@ from connection import PostgreSQL
 
 def main():
     args = parse_args()
-
     get_reviews(args.application, args.number)
 
 
@@ -63,7 +67,9 @@ def parse_args():
 
 
 def make_request(application_id, page_number):
-    request = urllib.request.Request("https://play.google.com/store/getreviews", method="POST")
+    # request = urllib.request.Request("https://play.google.com/store/getreviews", method="POST")
+    # Python 2 compatibility
+    request = urllib2.Request("https://play.google.com/store/getreviews")
 
     request.add_header("content-type", "application/x-www-form-urlencoded; charset=utf-8")
     request.add_header("origin", "https://play.google.com")
@@ -76,15 +82,24 @@ def make_request(application_id, page_number):
     request.add_header("x-client-data", "CJW2yQEIpbbJAQiptskBCJ6SygEIrZXKARiricoB")
     request.add_header("x-requested-with", "XMLHttpRequest")
 
-    data = urllib.parse.urlencode({'reviewType': "0",
-                                   'pageNum': page_number,
-                                   'id': application_id,  # "com.github.mobile"
-                                   'reviewSortOrder': "0",
-                                   'xhr': "1",
-                                   'token': "oCu4PNapSrAMxh2-vqD_iMxod_g:1394178244711"})
+    # data = urllib.parse.urlencode({'reviewType': "0",
+    #                                'pageNum': page_number,
+    #                                'id': application_id,  # "com.github.mobile"
+    #                                'reviewSortOrder': "0",
+    #                                'xhr': "1",
+    #                                'token': "oCu4PNapSrAMxh2-vqD_iMxod_g:1394178244711"})
+    # Python 2 compatibility
+    data = urllib.urlencode({'reviewType': "0",
+                             'pageNum': page_number,
+                             'id': application_id,  # "com.github.mobile"
+                             'reviewSortOrder': "0",
+                             'xhr': "1",
+                             'token': "oCu4PNapSrAMxh2-vqD_iMxod_g:1394178244711"})
     data = data.encode('utf-8')
 
-    response = urllib.request.urlopen(request, data)
+    #response = urllib.request.urlopen(request, data)
+    # Python 2 compatibility
+    response = urllib2.urlopen(request, data)
 
     return response
 
@@ -93,7 +108,9 @@ def parse_response(response):
     result = []
 
     # this is to turn the bytes that come in the response into a python string
-    response = str(response.read(), "utf-8")
+    # response = str(response.read(), "utf-8")
+    # Python 2 compatibility
+    response = str(response.read())
 
     # apparently random garbage
     response = response.replace(")]}'", " ")
@@ -111,6 +128,9 @@ def parse_response(response):
 
     # with open("reviews.raw", "a") as f:
     #     f.write(reviews)
+
+    # Python 2 compatibility
+    reviews = reviews.encode('utf-8')
 
     xmldoc = minidom.parseString("<reviews>" + reviews + "</reviews>")
 
