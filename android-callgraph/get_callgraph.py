@@ -6,7 +6,6 @@ import os
 
 
 def main():
-
     args = parse_args()
     get_callgraph(args.apk, args.output)
 
