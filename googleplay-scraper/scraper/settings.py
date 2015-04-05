@@ -5,8 +5,8 @@ NEWSPIDER_MODULE = 'scraper.spiders'
 
 ITEM_PIPELINES = {
     'scraper.pipelines.SQLiteStorePipeline' : 300,
-    'scraper.pipelines.GooglePlayDownloadPipeline' : 500,
-    'scraper.pipelines.ReviewsDownloadPipeline' : 800
+    # 'scraper.pipelines.GooglePlayDownloadPipeline' : 500,
+    # 'scraper.pipelines.ReviewsDownloadPipeline' : 800
     # 'scraper.pipelines.APKFilesPipeline' : 800,
 }
 
