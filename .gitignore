@@ -1,8 +1,5 @@
 # Created by .ignore support plugin (hsz.mobi)
 
-android-callgraph/output/
-android-callgraph/input/
-
 callgraph-database/android.cg.db
 
 googleplay-scraper/reviews/connection.py
