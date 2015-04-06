@@ -15,21 +15,53 @@ from attacksurfacemeter.formatters.pgsql_formatter import PgsqlFormatter
 
 
 def main():
-    work_path = "downloads/"
+    args = parse_args()
+    work_path = args.output_path
+
     apps_info = get_apks_info()
 
     for app in apps_info:
-        subprocess.call(["python2", "apk-download/get_apk.py", "-a", app['apk_name'], "-o", work_path])
-        get_callgraph(os.path.join(work_path, app['apk_name'] + ".apk"), work_path)
-        measure_attack_surface(os.path.join(work_path, app['apk_name'] + ".apk.cg.txt"))
+        print("Downloading apk for: " + app['apk_name'])
+        subprocess.call([args.python2_exe,
+                         "apk_download/get_apk.py",
+                         "-a", app['apk_name'], "-o", work_path])
 
-        # update_apk_info(app['id'])
+        print("Generating call graph for: " + app['apk_name'])
+        get_callgraph(os.path.join(work_path, app['apk_name'] + ".apk"), work_path)
+
+        # print("Measuring attack surface for: " + app['apk_name'])
+        # measure_attack_surface(os.path.join(work_path, app['apk_name'] + ".apk.cg.txt"))
+
+        update_apk_info(app['id'])
+
+        clean_up(work_path, app['apk_name'])
+
+def parse_args():
+    """
+        Provides a command line interface.
+
+        Defines all the positional and optional arguments along with their respective valid values
+        for the command line interface and returns all the received arguments as an object.
+
+        Returns:
+            An object that contains all the provided command line arguments.
+    """
+    parser = argparse.ArgumentParser(
+        description="Downloads the specified APK from the google play store.")
+
+    parser.add_argument("-p", "--python2_exe",
+                        help="The Python 2 executable with which to run the apk downloader.")
+
+    parser.add_argument("-o", "--output_path",
+                        help="The path to save the downloaded apks and generated call graph files.")
+
+    return parser.parse_args()
 
 
 def get_apks_info():
     apkinfo_select_stmt = '''SELECT id, apkname
                              FROM apkinformation
-                             WHERE isdownloaded = FALSE limit 5;'''
+                             WHERE isdownloaded = FALSE;'''
 
     db = psycopg2.connect(PostgreSQL.connection_string)
     c = db.cursor()
@@ -68,6 +100,12 @@ def update_apk_info(apk_info_id):
     db.commit()
     c.close()
     db.close()
+
+
+def clean_up(work_path, apk_name):
+    os.remove(os.path.join(work_path, apk_name + ".apk"))
+    os.remove(os.path.join(work_path, apk_name + ".apk.dex"))
+    os.remove(os.path.join(work_path, apk_name + ".apk-dex2jar.jar"))
 
 if __name__ == '__main__':
     main()
