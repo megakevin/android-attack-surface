@@ -16,6 +16,7 @@ def get_callgraph(path_to_apk, output_path):
     # java -jar javacg-0.1-SNAPSHOT-static.jar output/classes_dex2jar.jar > javacg.txt
 
     apk_name = os.path.basename(path_to_apk)
+    dirname = os.path.dirname(os.path.realpath(__file__))
 
     # Create the dex file from the APK
     subprocess.call(["jar", "xvf", path_to_apk, "classes.dex"])
@@ -25,7 +26,7 @@ def get_callgraph(path_to_apk, output_path):
                      os.path.join(output_path, apk_name + ".dex")])
 
     # Create the jar from dex file
-    subprocess.call(["dex2jar-0.0.9.15/d2j-dex2jar.sh",
+    subprocess.call([os.path.join(dirname, "dex2jar-0.0.9.15/d2j-dex2jar.sh"),
                      os.path.join(output_path, apk_name + ".dex")])
 
     # Move the jar file into the output folder
@@ -33,7 +34,8 @@ def get_callgraph(path_to_apk, output_path):
                      os.path.join(output_path, apk_name + "-dex2jar.jar")])
 
     # Obtain call graph from jar
-    subprocess.call(["java", "-jar", "java-callgraph/javacg-0.1-SNAPSHOT-static.jar",
+    subprocess.call(["java", "-jar",
+                     os.path.join(dirname, "java-callgraph/javacg-0.1-SNAPSHOT-static.jar"),
                      os.path.join(output_path, apk_name + "-dex2jar.jar")],
                     stdout=open(os.path.join(output_path, apk_name + ".cg.txt"), "w"))
 
