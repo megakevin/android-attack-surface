@@ -1,7 +1,5 @@
 __author__ = 'kevin'
 
-from attacksurfacemeter.loaders.cflow_line_parser import CflowLineParser
-from attacksurfacemeter.loaders.gprof_line_parser import GprofLineParser
 from attacksurfacemeter.loaders.javacg_line_parser import JavaCGLineParser
 
 from attacksurfacemeter.environments import Environments
@@ -77,27 +75,6 @@ class Call():
         self._function_name = name
         self._function_signature = signature
         self._environment = environment
-
-    @classmethod
-    def from_cflow(cls, cflow_line):
-        cflow_line_parser = CflowLineParser.get_instance(cflow_line)
-
-        new_instance = cls(cflow_line_parser.get_function_name(),
-                           cflow_line_parser.get_function_signature(),
-                           Environments.C)
-        new_instance.level = cflow_line_parser.get_level()
-
-        return new_instance
-
-    @classmethod
-    def from_gprof(cls, gprof_line):
-        gprof_line_parser = GprofLineParser.get_instance(gprof_line)
-
-        new_instance = cls(gprof_line_parser.get_function_name(),
-                           gprof_line_parser.get_function_signature(),
-                           Environments.C)
-
-        return new_instance
 
     @classmethod
     def from_javacg(cls, javacg_line):
