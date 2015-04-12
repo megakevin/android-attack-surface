@@ -1,5 +1,6 @@
 __author__ = 'kevin'
 
+import time
 import psycopg2
 
 from connection import PostgreSQL
@@ -15,13 +16,18 @@ def main():
         print("Updating isreviewsdownloaded flag on " + app['apk_name'] + " - Id: " + str(app['id']))
         update_app(app['id'])
 
+        print("Sleeping 30...")
+        time.sleep(30)
+
     print("Exiting...")
 
 
 def get_apps_info():
     apkinfo_select_stmt = '''SELECT id, apkname, numberofreviews
                              FROM apkinformation
-                             WHERE isreviewsdownloaded = FALSE;'''
+                             WHERE isreviewsdownloaded = FALSE
+                             AND isdownloaded = TRUE
+                             AND lowerdownloads > 1000;'''
 
     db = psycopg2.connect(PostgreSQL.connection_string)
     c = db.cursor()
