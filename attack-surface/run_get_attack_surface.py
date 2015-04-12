@@ -3,6 +3,7 @@ __author__ = 'kevin'
 import argparse
 import os
 import subprocess
+import time
 
 import psycopg2
 from connection import PostgreSQL
@@ -13,6 +14,12 @@ from attacksurfacemeter.call_graph import CallGraph
 from attacksurfacemeter.loaders.javacg_loader import JavaCGLoader
 from attacksurfacemeter.formatters.pgsql_formatter import PgsqlFormatter
 
+import logging
+logging.captureWarnings(True)
+
+import urllib3
+urllib3.disable_warnings()
+
 
 def main():
     args = parse_args()
@@ -21,20 +28,30 @@ def main():
     apps_info = get_apks_info()
 
     for app in apps_info:
+        print("Sleeping...")
+        time.sleep(5)
+
         print("Downloading apk for: " + app['apk_name'])
-        subprocess.call([args.python2_exe,
-                         "apk_download/get_apk.py",
-                         "-a", app['apk_name'], "-o", work_path])
+        return_code = subprocess.call([args.python2_exe,
+                                       "apk_download/get_apk.py",
+                                       "-a", app['apk_name'], "-o", work_path])
 
-        print("Generating call graph for: " + app['apk_name'])
-        get_callgraph(os.path.join(work_path, app['apk_name'] + ".apk"), work_path)
+        print("RETURN CODE: " + str(return_code))
 
-        # print("Measuring attack surface for: " + app['apk_name'])
-        # measure_attack_surface(os.path.join(work_path, app['apk_name'] + ".apk.cg.txt"))
+        if return_code == 0:
+            print("Generating call graph for: " + app['apk_name'])
+            get_callgraph(os.path.join(work_path, app['apk_name'] + ".apk"), work_path)
 
-        update_apk_info(app['id'])
+            # print("Measuring attack surface for: " + app['apk_name'])
+            # measure_attack_surface(os.path.join(work_path, app['apk_name'] + ".apk.cg.txt"))
 
-        clean_up(work_path, app['apk_name'])
+            update_apk_info(app['id'])
+
+            clean_up(work_path, app['apk_name'])
+        else:
+            print("Sleeping for 5 minutes...")
+            time.sleep(5 * 60)
+
 
 def parse_args():
     """
@@ -61,7 +78,8 @@ def parse_args():
 def get_apks_info():
     apkinfo_select_stmt = '''SELECT id, apkname
                              FROM apkinformation
-                             WHERE isdownloaded = FALSE;'''
+                             WHERE isdownloaded = FALSE
+                             AND lowerdownloads > 1000;'''
 
     db = psycopg2.connect(PostgreSQL.connection_string)
     c = db.cursor()
@@ -79,12 +97,12 @@ def get_apks_info():
     return apps
 
 
-def measure_attack_surface(input_call_graph_file):
-    g = CallGraph.from_loader(JavaCGLoader(input_call_graph_file))
-    g.collapse_android_black_listed_packages()
-
-    f = PgsqlFormatter(g, PostgreSQL.connection_string)
-    f.write_output()
+# def measure_attack_surface(input_call_graph_file):
+#     g = CallGraph.from_loader(JavaCGLoader(input_call_graph_file))
+#     g.collapse_android_black_listed_packages()
+#
+#     f = PgsqlFormatter(g, PostgreSQL.connection_string)
+#     f.write_output()
 
 
 def update_apk_info(apk_info_id):
