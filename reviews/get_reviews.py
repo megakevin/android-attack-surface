@@ -53,8 +53,8 @@ def get_reviews(application, number_of_reviews):
 
     for page_number in range(1, max_pages + 1):
 
-        print("Sleeping...")
-        time.sleep(5)
+        print("Sleeping 30...")
+        time.sleep(30)
 
         response = make_request(application, page_number)
         print("Reviews request made")
@@ -145,6 +145,12 @@ def parse_response(response):
         if review_date:
             review_date = review_date[0].firstChild.nodeValue
 
+        review_rating = [div for div in review.getElementsByTagName('div')
+                         if div.getAttribute('class') == "review-info-star-rating"]
+
+        if review_rating:
+            review_rating = review_rating[0].childNodes[1].getAttribute('aria-label')
+
         div_review_body = [div for div in review.getElementsByTagName('div')
                            if div.getAttribute('class') == "review-body"]
 
@@ -161,6 +167,7 @@ def parse_response(response):
 
         result.append({
             'title': review_title,
+            'rating': review_rating,
             'body': review_body,
             # converting time.struct_time into datetime
             'date': datetime.datetime(*time.strptime(review_date, "%B %d, %Y")[:6])
@@ -171,7 +178,7 @@ def parse_response(response):
 
 def save_reviews(application_id, reviews):
 
-    reviews_to_insert = [(application_id, r['title'], r['body'], r['date']) for r in reviews]
+    reviews_to_insert = [(application_id, r['title'], r['rating'], r['body'], r['date']) for r in reviews]
 
     # with sqlite3.connect('reviews.db') as db:
     #     db.executemany('INSERT INTO reviews (app, title, body, date) '
@@ -180,8 +187,8 @@ def save_reviews(application_id, reviews):
     with psycopg2.connect(PostgreSQL.connection_string) as db:
         try:
             cursor = db.cursor()
-            cursor.executemany('INSERT INTO reviews (app_id, title, body, date) '
-                               'VALUES (%s, %s, %s, %s)', reviews_to_insert)
+            cursor.executemany('INSERT INTO reviews (app_id, title, rating, body, date) '
+                               'VALUES (%s, %s, %s, %s, %s)', reviews_to_insert)
 
             db.commit()
 
