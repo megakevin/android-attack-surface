@@ -10,10 +10,6 @@ from connection import PostgreSQL
 
 from android_callgraph.get_callgraph import get_callgraph
 
-from attacksurfacemeter.call_graph import CallGraph
-from attacksurfacemeter.loaders.javacg_loader import JavaCGLoader
-from attacksurfacemeter.formatters.pgsql_formatter import PgsqlFormatter
-
 import logging
 logging.captureWarnings(True)
 
@@ -41,9 +37,6 @@ def main():
         if return_code == 0:
             print("Generating call graph for: " + app['apk_name'])
             get_callgraph(os.path.join(work_path, app['apk_name'] + ".apk"), work_path)
-
-            # print("Measuring attack surface for: " + app['apk_name'])
-            # measure_attack_surface(os.path.join(work_path, app['apk_name'] + ".apk.cg.txt"))
 
             update_apk_info(app['id'])
 
@@ -95,15 +88,6 @@ def get_apks_info():
     db.close()
 
     return apps
-
-
-# def measure_attack_surface(input_call_graph_file):
-#     g = CallGraph.from_loader(JavaCGLoader(input_call_graph_file))
-#     g.collapse_android_black_listed_packages()
-#
-#     f = PgsqlFormatter(g, PostgreSQL.connection_string)
-#     f.write_output()
-
 
 def update_apk_info(apk_info_id):
     apkinfo_update_stmt = '''UPDATE apkinformation
