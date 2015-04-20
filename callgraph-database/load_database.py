@@ -1,8 +1,11 @@
 __author__ = 'kevin'
 
 import argparse
-import sqlite3
+# import sqlite3
+import psycopg2
 import networkx as nx
+
+from connection import PostgreSQL
 
 
 def main():
@@ -35,12 +38,18 @@ def main():
 
     print("call graph file loaded into memory")
 
-    with sqlite3.connect('android.cg.db') as db:
-        db.executemany('INSERT INTO edges ('
-                       'caller, caller_package, caller_class, '
-                       'callee, callee_package, callee_class, '
-                       'app) '
-                       'VALUES (?, ?, ?, ?, ?, ?, ?)', edges_to_insert)
+    db = psycopg2.connect(PostgreSQL.connection_string)
+    c = db.cursor()
+
+    c.executemany('''INSERT INTO black_listed_edges (
+                     caller, caller_package, caller_class,
+                     callee, callee_package, callee_class,
+                     app)
+                     VALUES (%s, %s, %s, %s, %s, %s, %s)''', edges_to_insert)
+
+    db.commit()
+    c.close()
+    db.close()
 
     print("call graph loaded into database")
 
