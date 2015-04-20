@@ -12,12 +12,17 @@ def main():
 
     for app in apps_info:
         print("Downloading reviews for " + app['apk_name'] + " - Id: " + str(app['id']))
-        get_reviews(app['apk_name'], app['number_of_reviews'])
-        print("Updating isreviewsdownloaded flag on " + app['apk_name'] + " - Id: " + str(app['id']))
-        update_app(app['id'])
 
-        print("Sleeping 30...")
-        time.sleep(30)
+        try:
+            get_reviews(app['apk_name'], app['number_of_reviews'])
+            print("Updating isreviewsdownloaded flag on " + app['apk_name'] + " - Id: " + str(app['id']))
+            update_app(app['id'])
+
+            print("Sleeping 30...")
+            time.sleep(30)
+        except:
+            print("Sleeping for 5 minutes...")
+            time.sleep(5 * 60)
 
     print("Exiting...")
 
