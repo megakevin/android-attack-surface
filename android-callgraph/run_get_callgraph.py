@@ -36,11 +36,15 @@ def main():
 
         if return_code == 0:
             print("Generating call graph for: " + app['apk_name'])
-            get_callgraph(os.path.join(work_path, app['apk_name'] + ".apk"), work_path)
 
-            update_apk_info(app['id'])
+            try:
+                get_callgraph(os.path.join(work_path, app['apk_name'] + ".apk"), work_path)
 
-            clean_up(work_path, app['apk_name'])
+                update_apk_info(app['id'])
+
+                clean_up(work_path, app['apk_name'])
+            except Exception as ex:
+                continue
         else:
             print("Sleeping for 5 minutes...")
             time.sleep(5 * 60)
