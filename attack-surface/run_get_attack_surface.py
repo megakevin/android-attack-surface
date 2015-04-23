@@ -18,13 +18,15 @@ def main():
     for app in apps_info:
         callgraph_file = os.path.join(callgraph_files_location, app['apk_name'] + callgraph_file_extension)
 
-        if os.path.exists(callgraph_file):
+        if os.path.exists(callgraph_file) and os.path.getsize(callgraph_file) < 3500000 and os.path.getsize(callgraph_file) > 0:
             print("Calculating attack surface for: " + app['apk_name'])
             get_attack_surface(callgraph_file)
 
             print("Updating database for: " + app['apk_name'])
             update_attack_surface(app['apk_name'], callgraph_file)
             update_apk_info(app['id'])
+        else:
+            print("Skipping: " + app['apk_name'])
 
 
 def parse_args():
@@ -51,7 +53,7 @@ def get_apks_info():
                              FROM apkinformation
                              WHERE isjavaanalyze = FALSE
                              AND isdownloaded = TRUE
-                             AND lowerdownloads > 1000 and id = 34500;'''
+                             AND lowerdownloads > 1000;'''
 
     db = psycopg2.connect(PostgreSQL.connection_string)
     c = db.cursor()
