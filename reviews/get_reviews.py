@@ -49,22 +49,71 @@ def get_reviews(application, number_of_reviews):
     page_size = 40
 
     # calculate the number of pages to request to obtain the given number of reviews
-    max_pages = int(number_of_reviews / page_size) + 1
+    # max_pages = int(number_of_reviews / page_size) + 1
+    max_pages = 15
 
     for page_number in range(1, max_pages + 1):
 
-        print("Sleeping 30...")
-        time.sleep(30)
+        print("Sleeping 15...")
+        time.sleep(15)
+
+        print("Downloading page: " + str(page_number))
 
         response = make_request(application, page_number)
-        print("Reviews request made")
+        print("Reviews request made for: " + application)
 
         reviews = parse_response(response)
-        print("Reviews response parsed")
+        print("Reviews response parsed for: " + application)
 
         save_reviews(application, reviews)
-        print("Reviews saved into the database")
+        print("Reviews saved into the database for: " + application)
 
+        # distict_reviews = get_number_of_distinct_reviews(application)
+        # total_reviews = get_number_of_total_reviews(application)
+
+        # if distict_reviews < total_reviews:
+        #     print("Exiting because found repeated reviews!")
+        #     print("distict_reviews = " + str(distict_reviews))
+        #     print("total_reviews = " + str(total_reviews))
+        #     return
+
+
+def get_number_of_distinct_reviews(app_id):
+    reviews_select_stmt = '''with distinct_reviews as (
+                                SELECT app_id, title, body, rating
+                                FROM reviews
+                                where app_id = %s
+                                GROUP BY app_id, title, body, rating
+                            )
+                            select count(*) from distinct_reviews;'''
+
+    db = psycopg2.connect(PostgreSQL.connection_string)
+    c = db.cursor()
+
+    c.execute(reviews_select_stmt, (app_id,))
+    number = c.fetchone()[0]
+
+    c.close()
+    db.close()
+
+    return number
+
+
+def get_number_of_total_reviews(app_id):
+    reviews_select_stmt = '''select count(*)
+                             from reviews
+                             where app_id = %s;'''
+
+    db = psycopg2.connect(PostgreSQL.connection_string)
+    c = db.cursor()
+
+    c.execute(reviews_select_stmt, (app_id,))
+    number = c.fetchone()[0]
+
+    c.close()
+    db.close()
+
+    return number
 
 def make_request(application_id, page_number):
     request = urllib.request.Request("https://play.google.com/store/getreviews", method="POST")
