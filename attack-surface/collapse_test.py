@@ -5,7 +5,9 @@ import os
 import psycopg2
 from connection import PostgreSQL
 
-from get_attack_surface import get_attack_surface
+from attacksurfacemeter.android_call_graph import AndroidCallGraph
+from attacksurfacemeter.loaders.javacg_loader import JavaCGLoader
+from attacksurfacemeter.formatters.pgsql_formatter import PgsqlFormatter
 
 
 def main():
@@ -18,15 +20,25 @@ def main():
     for app in apps_info:
         callgraph_file = os.path.join(callgraph_files_location, app['apk_name'] + callgraph_file_extension)
 
-        if os.path.exists(callgraph_file) and os.path.getsize(callgraph_file) < 10000000 and os.path.getsize(callgraph_file) > 0:
-            print("Calculating attack surface for: " + app['apk_name'])
-            get_attack_surface(callgraph_file)
+        if os.path.exists(callgraph_file):
+            print("Loading call graph...")
+            g = AndroidCallGraph.from_loader(JavaCGLoader(callgraph_file, []))
+
+            original_node_count = len(g.nodes)
+            original_edge_count = len(g.edges)
+
+            print("Collapsing black listed edges...")
+            g.collapse_android_black_listed_edges()
+
+            collapsed_node_count = len(g.nodes)
+            collapsed_edge_count = len(g.edges)
 
             print("Updating database for: " + app['apk_name'])
-            update_attack_surface(app['apk_name'], callgraph_file)
-            update_apk_info(app['id'])
-        else:
-            print("Skipping: " + app['apk_name'])
+            print(app['apk_name'] + " " + str(original_node_count) + " " + str(original_edge_count) + " " + str(collapsed_node_count) + " " + str(collapsed_edge_count))
+
+            # insert(app['apk_name'],
+            #        original_node_count, original_edge_count,
+            #        collapsed_node_count, collapsed_edge_count)
 
 
 def parse_args():
@@ -53,8 +65,7 @@ def get_apks_info():
                              FROM apkinformation
                              WHERE isjavaanalyze = FALSE
                              AND isdownloaded = TRUE
-                             AND isreviewsdownloaded = TRUE
-                             AND lowerdownloads > 1000;'''
+                             AND lowerdownloads > 1000 and id = 34500;'''
 
     db = psycopg2.connect(PostgreSQL.connection_string)
     c = db.cursor()
@@ -72,30 +83,17 @@ def get_apks_info():
     return apps
 
 
-def update_attack_surface(new_attack_surface_source, old_attack_surface_source):
-    attack_surface_update_stmt = '''UPDATE attack_surfaces
-                                    SET source = %s
-                                    WHERE source = %s;'''
+def insert(apk_name, original_node_count, original_edge_count, collapsed_node_count, collapsed_edge_count):
+    collapse_data_insert_stmt = '''INSERT INTO collapse_data(apk_name,
+                                   original_node_count, original_edge_count,
+                                   collapsed_node_count, collapsed_edge_count)
+                                   VALUES (%s, %s, %s, %s, %s);'''
 
     db = psycopg2.connect(PostgreSQL.connection_string)
     c = db.cursor()
 
-    c.execute(attack_surface_update_stmt, (new_attack_surface_source, old_attack_surface_source))
-
-    db.commit()
-    c.close()
-    db.close()
-
-
-def update_apk_info(apk_info_id):
-    apkinfo_update_stmt = '''UPDATE apkinformation
-                             SET isjavaanalyze = TRUE
-                             WHERE id = %s;'''
-
-    db = psycopg2.connect(PostgreSQL.connection_string)
-    c = db.cursor()
-
-    c.execute(apkinfo_update_stmt, (apk_info_id,))
+    c.execute(collapse_data_insert_stmt, (apk_name, original_node_count, original_edge_count,
+                                          collapsed_node_count, collapsed_edge_count))
 
     db.commit()
     c.close()
