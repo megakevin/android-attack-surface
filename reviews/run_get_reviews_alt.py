@@ -19,7 +19,7 @@ def main():
 
         callgraph_file = os.path.join(callgraph_files_location, app['apk_name'] + callgraph_file_extension)
 
-        if os.path.exists(callgraph_file) and os.path.getsize(callgraph_file) < 6000000 and os.path.getsize(callgraph_file) > 0:
+        if os.path.exists(callgraph_file) and os.path.getsize(callgraph_file) < 10000000 and os.path.getsize(callgraph_file) > 0:
 
             print("Downloading reviews for " + app['apk_name'] + " - Id: " + str(app['id']))
 
@@ -28,8 +28,8 @@ def main():
                 print("Updating isreviewsdownloaded flag on " + app['apk_name'] + " - Id: " + str(app['id']))
                 update_app(app['id'])
 
-                print("Sleeping 30...")
-                time.sleep(30)
+                print("Sleeping 20...")
+                time.sleep(20)
             except:
                 print("Sleeping for 5 minutes...")
                 time.sleep(5 * 60)
@@ -45,7 +45,8 @@ def get_apps_info():
                              FROM apkinformation
                              WHERE isreviewsdownloaded = FALSE
                              AND isdownloaded = TRUE
-                             AND lowerdownloads > 1000;'''
+                             AND lowerdownloads > 1000
+                             ORDER BY id DESC;'''
 
     db = psycopg2.connect(PostgreSQL.connection_string)
     c = db.cursor()

@@ -53,8 +53,8 @@ def get_apks_info():
                              FROM apkinformation
                              WHERE isjavaanalyze = FALSE
                              AND isdownloaded = TRUE
-                             AND isreviewsdownloaded = TRUE
-                             AND lowerdownloads > 1000;'''
+                             AND lowerdownloads > 1000
+                             ORDER BY id DESC;'''
 
     db = psycopg2.connect(PostgreSQL.connection_string)
     c = db.cursor()

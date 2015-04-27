@@ -18,8 +18,8 @@ def main():
             print("Updating isreviewsdownloaded flag on " + app['apk_name'] + " - Id: " + str(app['id']))
             update_app(app['id'])
 
-            print("Sleeping 30...")
-            time.sleep(30)
+            print("Sleeping 20...")
+            time.sleep(20)
         except:
             print("Sleeping for 5 minutes...")
             time.sleep(5 * 60)
@@ -32,8 +32,8 @@ def get_apps_info():
                              FROM apkinformation
                              WHERE isreviewsdownloaded = FALSE
                              AND isdownloaded = TRUE
-                             AND isjavaanalyze = TRUE
-                             AND lowerdownloads > 1000;'''
+                             AND lowerdownloads > 1000
+                             ORDER BY id ASC;'''
 
     db = psycopg2.connect(PostgreSQL.connection_string)
     c = db.cursor()

@@ -68,14 +68,14 @@ def get_reviews(application, number_of_reviews):
         save_reviews(application, reviews)
         print("Reviews saved into the database for: " + application)
 
-        # distict_reviews = get_number_of_distinct_reviews(application)
-        # total_reviews = get_number_of_total_reviews(application)
+        distict_reviews = get_number_of_distinct_reviews(application)
+        total_reviews = get_number_of_total_reviews(application)
 
-        # if distict_reviews < total_reviews:
-        #     print("Exiting because found repeated reviews!")
-        #     print("distict_reviews = " + str(distict_reviews))
-        #     print("total_reviews = " + str(total_reviews))
-        #     return
+        if distict_reviews < total_reviews:
+            print("Exiting because found repeated reviews!")
+            print("distict_reviews = " + str(distict_reviews))
+            print("total_reviews = " + str(total_reviews))
+            return
 
 
 def get_number_of_distinct_reviews(app_id):
