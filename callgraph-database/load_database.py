@@ -9,11 +9,14 @@ from connection import PostgreSQL
 
 
 def main():
-
     args = parse_args()
+    load_database(args.javacgfile, args.application)
+
+
+def load_database(javacgfile, application):
     call_graph = nx.DiGraph()
 
-    with open(args.javacgfile) as raw_call_graph:
+    with open(javacgfile) as raw_call_graph:
         # line is like this:
         # M:com.example.kevin.helloandroid.Greeter:sayHelloInSpanish (M)java.lang.StringBuilder:toString.
         for line in raw_call_graph:
@@ -34,14 +37,20 @@ def main():
 
         edges_to_insert.append((caller, caller_package, caller_class,
                                 callee, callee_package, callee_class,
-                                args.application))
+                                application))
 
     print("call graph file loaded into memory")
 
     db = psycopg2.connect(PostgreSQL.connection_string)
     c = db.cursor()
 
-    c.executemany('''INSERT INTO black_listed_edges (
+    # c.executemany('''INSERT INTO black_listed_edges (
+    #                  caller, caller_package, caller_class,
+    #                  callee, callee_package, callee_class,
+    #                  app)
+    #                  VALUES (%s, %s, %s, %s, %s, %s, %s)''', edges_to_insert)
+
+    c.executemany('''INSERT INTO black_listed_edges_all_apps (
                      caller, caller_package, caller_class,
                      callee, callee_package, callee_class,
                      app)
