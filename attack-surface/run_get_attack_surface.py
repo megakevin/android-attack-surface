@@ -18,7 +18,7 @@ def main():
     for app in apps_info:
         callgraph_file = os.path.join(callgraph_files_location, app['apk_name'] + callgraph_file_extension)
 
-        if os.path.exists(callgraph_file) and os.path.getsize(callgraph_file) < 10000000 and os.path.getsize(callgraph_file) > 0:
+        if os.path.exists(callgraph_file) and os.path.getsize(callgraph_file) < 5000000 and os.path.getsize(callgraph_file) > 0:
             print("Calculating attack surface for: " + app['apk_name'])
             get_attack_surface(callgraph_file)
 
