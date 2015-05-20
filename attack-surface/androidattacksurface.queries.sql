@@ -15,10 +15,6 @@ from apkinformation
 group by userrating
 order by userrating;
 
-
-
-
-
 -- REVIEWS
 
 -- testing full text search
@@ -67,7 +63,7 @@ inner join distinct_reviews as r on a.apkname = r.app_id
 where a.isjavaanalyze = true and a.isreviewsdownloaded = true;
 
 
--- Number of usable reviews
+-- Number of apps with usable reviews
 with apps as (
   with distinct_reviews as (
       SELECT app_id, title, body, count(*) FROM reviews
@@ -124,44 +120,47 @@ from q
 group by number_of_apps_appeared
 order by number_of_apps_appeared;
 
+select avg(entry_points_count) from attack_surfaces;
+select avg(exit_points_count) from attack_surfaces;
+
 
 
 -- WORK QUERIES
 
 -- Master data query. Every app with its metrics and reviews with security word count.
-with q as (
-    WITH app_reviews_security_words AS (
-        WITH words_in_reviews AS (
-            WITH distinct_reviews AS (
-                SELECT
-                  app_id,
-                  title,
-                  body,
-                  count(*)
-                FROM reviews
-                GROUP BY app_id, title, body
-            )
+--with q as (
+WITH app_reviews_security_words AS (
+    WITH words_in_reviews AS (
+        WITH distinct_reviews AS (
             SELECT
               app_id,
-              to_tsvector(title) @@ to_tsquery(
-                  'unsafe | glitch | rooted | permission | unlock | crash | scam | privacy | risk | pop') AS title_match,
-              to_tsvector(body) @@ to_tsquery(
-                  'unsafe | glitch | rooted | permission | unlock | crash | scam | privacy | risk | pop') AS body_match
-            FROM distinct_reviews
-            ORDER BY app_id
+              title,
+              body,
+              count(*)
+            FROM reviews
+            GROUP BY app_id, title, body
         )
         SELECT
           app_id,
-          SUM(CAST(title_match AS INTEGER))                                    AS titles_with_security_words,
-          SUM(CAST(body_match AS INTEGER))                                     AS bodies_with_security_words,
-          SUM(CAST(title_match AS INTEGER)) + SUM(CAST(body_match AS INTEGER)) AS reviews_with_security_words
-        FROM words_in_reviews
-        GROUP BY app_id
+          to_tsvector(title) @@ to_tsquery(
+              'unsafe | glitch | rooted | permission | unlock | crash | scam | privacy | risk | pop') AS title_match,
+          to_tsvector(body) @@ to_tsquery(
+              'unsafe | glitch | rooted | permission | unlock | crash | scam | privacy | risk | pop') AS body_match
+        FROM distinct_reviews
+        ORDER BY app_id
     )
     SELECT
-      arsw.*,
-      apkinfo.*,
-      atksrf.* --, 
+      app_id,
+      SUM(CAST(title_match AS INTEGER))                                    AS titles_with_security_words,
+      SUM(CAST(body_match AS INTEGER))                                     AS bodies_with_security_words,
+      SUM(CAST(title_match AS INTEGER)) + SUM(CAST(body_match AS INTEGER)) AS reviews_with_security_words
+    FROM words_in_reviews
+    GROUP BY app_id
+)
+SELECT
+  arsw.*,
+  apkinfo.*,
+  atksrf.* --, 
 --        (select AVG(n.entry_page_rank)
 --         from nodes as n
 --         where n.attack_surface_id = atksrf.id 
@@ -170,11 +169,11 @@ with q as (
 --         from nodes as n
 --         where n.attack_surface_id = atksrf.id
 --           and n.is_exit_point = true) as average_exit_page_rank_of_exit_points
-    FROM app_reviews_security_words AS arsw
-      INNER JOIN apkinformation AS apkinfo ON arsw.app_id = apkinfo.apkname
-      INNER JOIN attack_surfaces AS atksrf ON arsw.app_id = atksrf.source
-)
-select count(*) from q;
+FROM app_reviews_security_words AS arsw
+  INNER JOIN apkinformation AS apkinfo ON arsw.app_id = apkinfo.apkname
+  INNER JOIN attack_surfaces AS atksrf ON arsw.app_id = atksrf.source;
+--)
+--select count(*) from q;
 
 
 -- callgraph measurement and reviews progress
@@ -198,7 +197,62 @@ select count(*) from reviews;
 */
 
 
-select count(*) from reviews where app_id = 'com.imageline.ILRemote';
+select title, rating, body, count(*) from reviews where app_id = 'com.oasisfeng.greenify' GROUP BY title, rating, body;
 
+
+select count(*)
+from apkinformation as a 
+left outer join reviews as r on a.apkname = r.app_id
+where r.app_id is NULL and a.isjavaanalyze = TRUE and a.isreviewsdownloaded = TRUE;
+
+
+select count(*) from apkinformation where isjavaanalyze = true and isreviewsdownloaded = true;
 
 select count(*) from black_listed_edges_all_apps;
+
+
+
+-- DISTRIBUTION OF INPUT METHODS
+
+select method_package, (CAST(count(*) as FLOAT ) / 364) * 100 as percent
+from input_methods
+group by method_package
+order by percent desc;
+
+select method_package, (CAST(count(*) as FLOAT ) / 364) * 100 as percent
+from input_methods 
+group by method_package 
+having (CAST(count(*) as FLOAT ) / 364) * 100 >= 1;
+
+with q as (
+  select method_package, (CAST(count(*) as FLOAT ) / 364) * 100 as percent
+  from input_methods
+  group by method_package
+  having (CAST(count(*) as FLOAT ) / 364) * 100 < 1
+)
+select SUM(percent) from q;
+
+
+
+
+select * from output_methods;
+
+select method_package, (CAST(count(*) as FLOAT ) / 304) * 100 as percent
+from output_methods
+group by method_package
+order by percent desc;
+
+select method_package, (CAST(count(*) as FLOAT ) / 304) * 100 as percent
+from output_methods
+group by method_package
+having (CAST(count(*) as FLOAT ) / 304) * 100 >= 1;
+
+with q as (
+    select method_package, (CAST(count(*) as FLOAT ) / 304) * 100 as percent
+    from output_methods
+    group by method_package
+    having (CAST(count(*) as FLOAT ) / 304) * 100 < 1
+)
+select SUM(percent) from q;
+
+-- other = 10.855263157894735
