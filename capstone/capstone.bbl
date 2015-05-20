@@ -139,10 +139,21 @@ P.~K. Manadhata, Y.~Karabulut, and J.~M. Wing, ``Report: Measuring the attack
   \url{https://github.com/gousiosg/java-callgraph}
 \BIBentrySTDinterwordspacing
 
+\bibitem{attack_surface_meter}
+\BIBentryALTinterwordspacing
+``Attack Surface Meter. Library for computing attack surface metrics.'' [Online]. Available:
+  \url{https://github.com/andymeneely/attack-surface-metrics}
+\BIBentrySTDinterwordspacing
+
 \bibitem{soot_framework}
 \BIBentryALTinterwordspacing
 ``Soot: A framework for analyzing and transforming java and android
   applications.'' [Online]. Available: \url{http://sable.github.io/soot/}
+\BIBentrySTDinterwordspacing
+
+\bibitem{googleplay_scraper}
+\BIBentryALTinterwordspacing
+``DroidDarwin: Google Play Store scraper.'' [Online]. Available: \url{https://github.com/DroidDarwin/AnalyzingCode}
 \BIBentrySTDinterwordspacing
 
 \bibitem{Lam_thesoot}
