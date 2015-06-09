@@ -2,7 +2,6 @@ __author__ = 'kevin'
 
 import time
 import psycopg2
-import os
 
 from connection import PostgreSQL
 from get_reviews import get_reviews
@@ -11,31 +10,19 @@ from get_reviews import get_reviews
 def main():
     apps_info = get_apps_info()
 
-    # callgraph_files_location = '../android-callgraph/downloads/'
-    callgraph_files_location = '/media/kevin/Data/Documents/call_graphs/'
-    callgraph_file_extension = '.apk.cg.txt'
-
     for app in apps_info:
+        print("Downloading reviews for " + app['apk_name'] + " - Id: " + str(app['id']))
 
-        callgraph_file = os.path.join(callgraph_files_location, app['apk_name'] + callgraph_file_extension)
+        try:
+            get_reviews(app['apk_name'], app['number_of_reviews'])
+            print("Updating isreviewsdownloaded flag on " + app['apk_name'] + " - Id: " + str(app['id']))
+            update_app(app['id'])
 
-        if os.path.exists(callgraph_file) and os.path.getsize(callgraph_file) < 5000000 and os.path.getsize(callgraph_file) > 0:
-
-            print("Downloading reviews for " + app['apk_name'] + " - Id: " + str(app['id']))
-
-            try:
-                get_reviews(app['apk_name'], app['number_of_reviews'])
-                print("Updating isreviewsdownloaded flag on " + app['apk_name'] + " - Id: " + str(app['id']))
-                update_app(app['id'])
-
-                print("Sleeping 20...")
-                time.sleep(20)
-            except:
-                print("Sleeping for 5 minutes...")
-                time.sleep(5 * 60)
-
-        else:
-            print("Skipping: " + app['apk_name'])
+            print("Sleeping 20...")
+            time.sleep(20)
+        except:
+            print("Sleeping for 5 minutes...")
+            time.sleep(5 * 60)
 
     print("Exiting...")
 
@@ -45,8 +32,9 @@ def get_apps_info():
                              FROM apkinformation
                              WHERE isreviewsdownloaded = FALSE
                              AND isdownloaded = TRUE
+                             AND isjavaanalyze = TRUE
                              AND lowerdownloads > 1000
-                             ORDER BY id DESC;'''
+                             ORDER BY id ASC;'''
 
     db = psycopg2.connect(PostgreSQL.connection_string)
     c = db.cursor()
